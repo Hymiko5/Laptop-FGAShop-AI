@@ -1,0 +1,199 @@
+.header
+
+.row.header_1
+  .col-lg-3
+    img(src='/public/thumnail.png' width='100%' height='150px')
+  .col-lg-7.mt-4
+    .list
+      img(src='https://t010.gokisoft.com/themes/freshfood/img/cache/catalog/services/policy1-0x0.png' width='40px' height='40px' style='float: left; margin-right: 10px;')
+      a.text-dark(href='#' style='font-weight: bold; text-decoration: none;') Mi&#x1EC5;n ph&iacute; v&#x1EAD;n chuy&#x1EC3;n
+      p B&aacute;n k&iacute;nh 100km
+    .list
+      img(src='https://t010.gokisoft.com/themes/freshfood/img/cache/catalog/services/policy2-0x0.png' width='40px' height='40px' style='float: left; margin-right: 10px;')
+      a.text-dark(href='#' style='font-weight: bold; text-decoration: none;') H&#x1ED7; tr&#x1EE3; 24/7
+      p
+        | Hotline: 
+        b 093 - 39 08 568
+    .list
+      img(src='https://t010.gokisoft.com/themes/freshfood/img/cache/catalog/services/policy3-0x0.png' width='40px' height='40px' style='float: left; margin-right: 10px;')
+      a.text-dark(href='#' style='font-weight: bold; text-decoration: none;') Gi&#x1EDD; l&agrave;m vi&#x1EC7;c
+      p T2 - T7 Gi&#x1EDD; h&agrave;nh ch&iacute;nh
+  .col-lg-2
+    .giohang
+      if totalQuantity
+        span.fas.fa-shopping-bag
+        a.shopping-cart(href='/cart')=` Giỏ hàng (${totalQuantity})`
+      else
+        span.fas.fa-shopping-bag
+        a.shopping-cart(href='/cart')=" Giỏ hàng (0)"
+nav.navbar.navbar-expand-xl.navbar-dark.bg-dark
+  a.navbar-brand(href='/laptop-ldp')
+    i.fa.fa-cube
+    | Brand
+    b Name
+  button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarCollapse')
+    span.navbar-toggler-icon
+  // Collection of nav links, forms, and other content for toggling
+  #navbarCollapse.collapse.navbar-collapse.justify-content-start
+    form.navbar-form.form-inline#search-form(action="/tim-kiem" method="get")
+      .input-group.search-box
+        input#search.form-control(type='text' name='keyword' placeholder='Search here...' required)
+        span.input-group-addon
+          button.noneBorder-btn(type='submit')
+            i.fas.fa-search
+        //- .container
+        .product-dropdown.disable
+        //-   // end shopping-cart-header
+        //-   ul.autocomplete-items
+        //-     li.clearfix
+        //-       a.d-flex(href='#')
+        //-         .item-img
+        //-           img(src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/cart-item1.jpg' alt='item1')
+        //-         .item-detail
+        //-           h4.item-name Sony DSC-RX100M III
+        //-           .item-installment Online giá rẻ
+        //-           span.item-onlinePrice 28.490.000đ
+        //-           span.item-price 28.990.000đ
+        //-           .item-gift Quà 550.000đ
+        //-     li.clearfix
+        //-       a.d-flex(href='#')
+        //-         .item-img
+        //-           img(src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/cart-item2.jpg' alt='item1')
+        //-         .item-detail
+        //-           h4.item-name KS Automatic Mechanic...
+        //-           .item-installment Online giá rẻ
+        //-           span.item-onlinePrice 28.490.000đ
+        //-           span.item-price 28.990.000đ
+        //-           .item-gift Quà 550.000đ
+        //-     li.clearfix
+        //-       a.d-flex(href='#')
+        //-         .item-img
+        //-           img(src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/cart-item3.jpg' alt='item1')
+        //-         .item-detail
+        //-           h4.item-name Kindle, 6&quot; Glare-Free To...
+        //-           .item-installment Online giá rẻ
+        //-           span.item-onlinePrice 28.490.000đ
+        //-           span.item-price 28.990.000đ
+        //-           .item-gift Quà 550.000đ
+    .navbar-nav.ml-auto
+      a.nav-item.nav-link.active(href='/laptop-ldp')
+        i.fa.fa-home
+        span Home
+      .nav-item.dropdown
+        a.nav-item.nav-link.dropdown-toggle.user-action(href='#' data-toggle='dropdown')
+          i.fas.fa-laptop
+          span Laptop
+        .dropdown-menu
+          a.dropdown-item(href="/laptop?g=laptop-gaming")
+            span Laptop gaming
+          a.dropdown-item(href="/laptop-apple-macbook")
+            span Macbook
+          a.dropdown-item(href="/laptop?g=hoc-tap-van-phong")
+            span Học tập văn phòng
+          a.dropdown-item(href="/laptop?g=do-hoa-ky-thuat")
+            span Đồ họa kĩ thuật
+          a.dropdown-item(href="/laptop?g=mong-nhe")
+            span Mỏng nhẹ
+          a.dropdown-item(href="/laptop?g=cao-cap-sang-trong")
+            span Cao cấp sang trọng
+      a.nav-item.nav-link(href='#')
+        i.fas.fa-keyboard
+        span Plugin
+      a.nav-item.nav-link(href='http://localhost:4000/chatbot/Hymiko5')
+        i.fa.fa-envelope
+        span Messages
+      a.nav-item.nav-link(href='#')
+        i.fa.fa-bell
+        span Notifications
+      .nav-item.dropdown
+        if user
+          a.nav-item.nav-link.dropdown-toggle.user-action(href='#' data-toggle='dropdown')
+            img.avatar(src=user.photo)
+            span=user.userName
+            b.caret
+          .dropdown-menu
+            a.dropdown-item(href='#')
+              i.fas.fa-address-card
+              |  Profile
+            a.dropdown-item(href='#')
+              i.fas.fa-cog
+              |  Settings
+            .divider.dropdown-divider
+            a.dropdown-item(href='/logout')
+              i.fas.fa-sign-out-alt
+              |  Logout
+        else
+          a.btn.btn-secondary(href='/login')
+            span Login
+
+script.
+  $(document).ready(function() {
+  const search = $('#search');
+  const productDropdown = $('.product-dropdown');
+  search.on('input',function() {
+    const keywords = search.val();
+    if(keywords) {
+      $.ajax({
+          type: "get",
+          url: "/Common/SuggestSearch",
+          dataType: "json",
+          data: {
+            keywords
+          },
+          success: (data) => {
+            if(data.laptopTypes.length > 0 || data.laptops.length > 0){
+              productDropdown.html(
+                  '<ul class="autocomplete-items">'
+                  + data.laptopTypes.map(laptopType => {
+                    if(laptopType.name === "Macbook"){
+                      return `<li><a class="blue-anchor" href="/laptop-apple-macbook">${laptopType.name}</a></li>`;
+                    }
+                    else {
+                      return `<li><a class="blue-anchor" href="/laptop?g=${laptopType.g}">${laptopType.name}</a></li>`;
+                    }
+                    }).join("") + '<div class="suggested-product">Sản phẩm gợi ý</div><hr />'
+                    + data.laptops.map(laptop => {
+                  {
+                  let result = `<li class="clearfix"><a class="d-flex" href="/laptop/${laptop.slug}">
+                <div class="item-img"><img src="${laptop.thumnail[0]}" alt="${laptop.thumnail[0]}" /></div>
+                <div class="item-detail">
+                <h4 class="item-name">${laptop.laptopName}</h4>`;
+                  if(laptop.installment && laptop.installment != ""){
+                    result += `<div class="item-installment">${laptop.installment}</div>`;
+                  }
+                  if(laptop.onlinePrice || laptop.onlinePrice != 0) {
+                    result += `<span class="item-onlinePrice font-bold">${laptop.onlinePrice}<sup>đ</sup></span>
+                                <del class="item-price del-price">${laptop.price}<sup>đ</sup></del>`
+                  }
+                  else {
+                    result += `<span class="item-price font-bold">${laptop.price}<sup>đ</sup></span>`
+                  }
+                  if(laptop.gift.amount) {
+                    result += `<div class="item-gift">Quà <span class="font-bold">${laptop.gift.amount}</span></div>`
+                  }
+                  result += "</div></a></li>"
+                  return result;
+                }
+                }).join("") + '</ul>'
+                );
+                productDropdown.removeClass("disable");
+            }
+            else {
+              productDropdown.html("");
+              productDropdown.addClass("disable");
+            }
+            
+          
+    }
+  })
+    }
+    else {
+      productDropdown.html("");
+      productDropdown.addClass("disable");
+    }
+  })
+  //- search.on('focusout', function() {
+  //-   productDropdown.addClass("disable");
+  //- })
+
+  })

@@ -1,0 +1,23 @@
+extends layout.pug
+
+block content
+  if showHome 
+    include ./home.pug
+  if showLaptopDetail
+    include ./detail.pug
+  if showNews
+    include ./news.pug
+  if showRegister
+    include ./register.pug
+  if showLogin
+    include ./login.pug
+  if showUserCart
+    include ./shoppingCart.pug
+  if showLaptopFound
+    include ./searchedLaptop.pug
+  if showLaptopByType
+    include ./laptopType.pug
+  //- if showPayment
+  //- include ./payment.pug
+
+    

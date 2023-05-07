@@ -1,0 +1,101 @@
+{"intents": [
+       
+    {
+      "tag": "identity",
+      "patterns": ["Bạn tên là gì?","Ai đấy?","Bạn là ai?", "Tên bạn là gì?", "Tôi có thể gọi bạn là?"],
+      "responses": ["Tôi là bargybot", "Tên tôi là bargybot", "Người tạo ra tôi gọi tôi là bargybot", "Bạn có thể gọi tôi là bargybot", "bargybot","Tôi được gọi là bargybot"]
+    },
+    {
+      "tag": "job",
+      "patterns": ["Bạn làm gì?", "Nhiệm vụ của bạn là gì?", "Bạn được tạo ra để làm gì?", "Bạn làm gì ở đây?"],
+          "responses": [
+                    "Tôi tư vấn cho khách hàng về sản phẩm, bạn cũng có thể kiểm tra tình trạng đơn hàng ở đây!"]
+    },
+    {
+      "tag": "greeting",
+      "patterns": ["Xin chào", "Có ai ở đây không?"],
+      "responses": ["Tôi là bargybot, tôi có thể giúp gì cho bạn?"],
+      "context_set": ""
+    },
+    {
+      "tag": "goodbye",
+      "patterns": ["Tạm biệt", "bye", "Thanks", "Cảm ơn"],
+      "responses": ["Cảm ơn bạn đã ghé thăm của hàng!"]
+    },
+    {
+      "tag": "noanswer",
+      "patterns": ["bla bla bla","bla bla"],
+      "responses": [ "Xin lỗi, tôi không hiểu :))" ]
+    },
+    {
+      "tag": "advice",
+      "patterns": ["Bạn có thể tư vấn cho tôi không?","Tôi cần bạn tư vấn để lựa chon sản phẩm?", "Tôi chưa biết chọn laptop nào?", "Tôi không biết phải mua sản phẩm nào"],
+      "responses": [ "Bạn có thể cho tội một số thông tin về cấu hình, giá sản phẩm bạn muốn mua không?" ]
+    },
+    {
+      "tag": "brand",
+      "patterns": ["Tôi muốn mua laptop hãng __","Hãng __", "__ có tốt không"],
+      "responses": [ "Giới thiệu: __" ]
+    },
+    {
+      "tag": "laptopType",
+      "patterns": ["Laptop loại __", "Tôi muốn laptop đáp ứng được nhu cầu __", "Tôi muốn laptop loại __", "Loại __"],
+      "responses": [ "Giới thiệu: __" ]
+    },
+    {
+      "tag": "price",
+      "patterns": ["Giá tầm khảng __", "Tôi có __", "__ có loại nào tốt không", "Tôi muốn giá tầm __"],
+      "responses": [ "Tôi hiểu rồi" ]
+    },
+    {
+      "tag": "gift",
+      "patterns": ["Sản phẩm id __ có khuyễn mãi không?", "Tôi có được tặng gì khi mua sản phẩm id __ không?"],
+      "responses": [ "Quà tặng: __" ]
+    },
+    {
+      "tag": "config_cpu_i",
+      "patterns": ["Tôi muốn CPU i__", "CPU i__", "CPU loại i__"],
+      "responses": [ "Tôi hiểu rồi" ]
+    },
+    {
+      "tag": "config_cpu_speed",
+      "patterns": ["Tôi muốn CPU xung nhịp __ GHz mỗi luồng", "CPU xung nhịp __ GHz", "CPU loại xung nhịp __ GHz mỗi luồng", "CPU xung nhịp _ GHz","Tôi muốn CPU xung nhịp __GHz mỗi luồng", "CPU xung nhịp __GHz", "CPU loại xung nhịp __GHz mỗi luồng", "CPU xung nhịp _GHz"],
+      "responses": [ "Tôi hiểu rồi" ]
+    },
+    {
+      "tag": "config_ram",
+      "patterns": ["Tôi muốn __ GB ram", "__ GB ram", "Nó có __ GB ram", "Loại __ GB ram", "Tôi muốn __GB ram", "__GB ram", "Nó có __GB ram", "Loại __GB ram"],
+      "responses": [ "Tôi hiểu rồi" ]
+    },
+    {
+      "tag": "hard_drive",
+      "patterns": ["Ổ cứng SSD __ GB", "Ổ cứng __ GB SSD", "Ổ cứng HDD __ GB", "Ổ cứng __ GB HDD", "Ổ cứng SSD __GB", "Ổ cứng __GB SSD", "Ổ cứng HDD __GB", "Ổ cứng __GB HDD"],
+      "responses": [ "Tôi hiểu rồi" ]
+    },
+    {
+      "tag": "brand",
+      "patterns": ["Hãng __", "Laptop của __", "Laptop thuộc hãng __"],
+      "responses": [ "Tôi hiểu rồi" ]
+    },
+    {
+      "tag": "operation",
+      "patterns": [ "Hệ điều hành __", "Chạy hệ điều hành __", "Chạy __" ],
+      "responses": [ "Tôi hiểu rồi" ]
+    },
+    {
+      "tag": "laptop_weight",
+      "patterns": [ "Nặng khoảng __ kg", "Khoảng __ kg", "__ kg", "Nặng khoảng __kg", "Khoảng __kg", "__kg" ],
+      "responses": [ "Tôi hiểu rồi" ]
+    },
+    {
+      "tag": "order",
+      "patterns": [ "Cho tôi xem thông tin đơn hàng có id __", "Thông tin đơn hàng id __", "Đơn hàng __" ],
+      "responses": [ "Thông tin đơn hàng: " ]
+    },
+    {
+      "tag": "query",
+      "patterns": [ "Đây là tất cả yêu cầu của tôi", "Tôi chỉ cần thế này", "Tôi đã hết yêu cầu", "Cho tôi xem kết quả tìm kiếm", "Tôi không còn yêu cầu" ],
+      "responses": [ "" ]
+    }
+  ]
+}

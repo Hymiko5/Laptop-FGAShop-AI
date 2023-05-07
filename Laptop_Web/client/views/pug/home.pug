@@ -1,0 +1,153 @@
+.container
+  .row
+    .col-lg-9
+      .row
+        .hieuungchay.mt-3
+          #demo.carousel.slide(data-ride='carousel')
+            // Tạo chỉ số
+            ul.carousel-indicators
+              li.active(data-target='#demo' data-slide-to='0')
+              li(data-target='#demo' data-slide-to='1')
+            // Tạo trang trình bày
+            .carousel-inner
+              .carousel-item.active
+                img.anhchay(src='https://cdn.tgdd.vn/2022/06/banner/720-220-720x220-23.png' alt='Ảnh 1')
+              .carousel-item
+                img.anhchay(src='https://cdn.tgdd.vn/2022/05/banner/720-220-720x220-244.png' alt='Ảnh 2')
+            // Tạo trái, phải
+            a.carousel-control-prev(href='#demo' data-slide='prev')
+              span.carousel-control-prev-icon
+            a.carousel-control-next(href='#demo' data-slide='next')
+              span.carousel-control-next-icon
+      //
+        <div class="row mt-4">
+        <div class="col-lg-6">
+        <img src="https://t010.gokisoft.com/uploads/2021/07/1-s-1594-hinh-anh-quang-cao.jpg" width="100%" class="rounded">
+        </div>
+        <div class="col-lg-6">
+        <img src="https://t010.gokisoft.com/uploads/2021/07/1-s-1596-hinh-anh-quang-cao-2.jpg" width="100%" class="rounded">
+        </div>
+        </div>
+    .col-lg-3.mt-3
+      .khunganh
+        img(src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQojNcKt0H6jnKfXLUCQ1EH8AS0WjVxZjeaKg&usqp=CAU')
+        img(src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQojNcKt0H6jnKfXLUCQ1EH8AS0WjVxZjeaKg&usqp=CAU')
+.container
+.row.mt-3.d-flex.justify-content-center.align-items-center
+  .col-lg-10.mt-2.dark-gray.flex-box
+    .row.khoidanhmuc
+      .col-lg-2.thongtindm
+        a(href='#')
+          img(src='https://cdn.tgdd.vn/Brand/1/logo-asus-149x40.png')
+      .col-lg-2.thongtindm
+        a(href='#')
+          img(src='https://cdn.tgdd.vn/Brand/1/logo-lenovo-149x40.png')
+      .col-lg-2.thongtindm
+        a(href='#')
+          img(src='https://cdn.tgdd.vn/Brand/1/logo-acer-149x40.png')
+      .col-lg-2.thongtindm
+        a(href='#')
+          img(src='https://cdn.tgdd.vn/Brand/1/logo-dell-149x40.png')
+      .col-lg-2.thongtindm
+        a(href='#')
+          img(src='https://cdn.tgdd.vn/Brand/1/logo-msi-149x40.png')
+if laptopTypes
+  .container.product
+    each laptopType in laptopTypes
+      .row.mt-4
+        .col-lg-3.danhmuc
+          .tieudedm= laptopType.name
+        .col-lg-9.xemtatca
+        .duongke
+      .row.mt-4
+        each laptop in laptopType.laptops
+          .col-lg-3.my-4
+            .card.card-list
+              a(href='/laptop/' + laptop.slug)
+                img.bg-success.lazyload(data-src=laptop.thumnail[0] height='auto' width='98%' )
+                .card-body.p-2.my-auto(style='text-align: left;')
+                  .text-dark(href='#')=laptop.shortName
+                  .item-compare
+                    span=laptop.configuration.RAM.split(',')[0]
+                    span=laptop.configuration["Ổ cứng"]
+                  if !laptop.isBusiness
+                    span(style="font-size: 0.8rem") Ngừng kinh doanh
+                  else if laptop.onlinePrice !== "0"
+                    span(style="font-size: 0.8rem") Online giá rẻ
+                    br
+                    span(style='padding-left: 5px')
+                      del=laptop.price
+                      sup đ
+                    br
+                    span(style='font-weight: bold; font-size: 18px; padding-right: 5px;')=laptop.onlinePrice
+                      sup đ
+                  else
+                    span(style='font-weight: bold; font-size: 18px; padding-right: 5px;')=laptop.price
+                      sup đ
+                  if laptop.gift.amount && laptop.isBusiness
+                    p.item-gift Quà 
+                      b=laptop.gift.amount
+                        sup đ
+              .item-info
+                if laptop.rate.rateNumber != 0
+                  - abcdefu = 123;
+                  - n = (Math.round(laptop.rate.stars*2)/2);
+                  .product-rating
+                    each _, i in Array(5)
+                      if n == 0.5
+                        i.fas.fa-star-half-alt
+                        - n = 0
+                      else if n > 0 && n != 0.05
+                        - n = n - 1
+                        i.fas.fa-star
+                      else
+                        i.fas.fa-star.star-o
+                    sup=" "+laptop.rate.rateNumber.match(/\d+/g)
+                    //- while n > 0
+                    //-   if n === 0.5
+                    //-     i.fas.fa-star-half-alt
+                    //-     - n = 0
+                    //-   else
+                    //-     - n = n - 1
+                    //-     i.fas.fa-star
+                    //- sup=" "+laptop.rate.rateNumber.match(/\d+/g)
+                .utility
+                  p
+                    - regex = /\(([^)]+)\)/;
+                    .box-config
+                      if laptop.configuration["Màn hình"]
+                        span.config-name M.HÌNH
+                        span=laptop.configuration["Màn hình"].replace(regex, '')
+                    .box-config
+                      span.config-name CPU
+                      span=laptop.configuration["CPU"]
+                    .box-config
+                      if laptop.configuration["Card màn hình"]
+                        span.config-name Card 
+                        span=laptop.configuration["Card màn hình"].replace(regex, '').split(',')[1].trim()
+            .sale=laptop.installment
+      if laptopType.g
+        a.block-btn(href=`/laptop?g=${laptopType.g}`)
+          span="Xem tất cả " + laptopType.name
+      else
+        a.block-btn(href=`/laptop-apple-macbook`)
+          span="Xem tất cả " + laptopType.name
+      //- a(href=`/laptop?g=${laptopType.g}`) Xem tất cả
+      
+
+
+script.
+  const images = document.querySelectorAll(".lazyload");
+  let imageOptions = {};
+  let observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+  if(!entry.isIntersecting) return;
+  const image = entry.target;
+  const newURL = image.getAttribute('data-src');
+  image.src = newURL;
+  observer.unobserve(image);
+  })
+  }, imageOptions);
+  images.forEach(image => {
+  observer.observe(image)
+  })
