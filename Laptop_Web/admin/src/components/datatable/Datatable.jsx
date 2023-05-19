@@ -4,22 +4,29 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState, useLayoutEffect } from "react";
 import useFetch from "../../hooks/useFetch";
 import axios from "axios";
+import { DataGridSelectBox } from "../dataGridSelectBox/DataGridSelectBox";
+import Select from 'react-select';
 
-const Datatable = ({ columns }) => {
+const Datatable = ({ columns, datasearch, model }) => {
   const location = useLocation();
-  let path = location.pathname.split("/")[2];
-  path = path !== "products" ? path : "laptops";
-  const { data, loading, error } = useFetch(`/admin/${path}`);
+  let orPath = location.pathname.split("/")[2];
+  let path = orPath !== "products" ? orPath : "laptops";
+  const { data } = useFetch(`/admin/${path}`);
   const [list, setList] = useState([]);
   useEffect(() => {
-      setList(data);
+      if(model == "list") {
+        setList(data)
+      } if (model == "search") setList(datasearch)
   }, [data]);
+
+  
 
   const handleDelete = async (id) => {
     var result = window.confirm("Bạn có chắc muốn xóa?");
     if (result) {
       try {
         await axios.delete(`/admin/${path}/${id}`);
+        console.log(`/admin/${path}/${id}`);
         setList(list.filter((item) => item._id !== id));
       } catch (err) { }
     }
@@ -32,9 +39,9 @@ const Datatable = ({ columns }) => {
       headerName: "Action",
       width: 200,
       renderCell: (params) => {
-        return (
+        if(path != "orders")return (
           <div className="cellAction">
-            <Link to={`/admin/${path}/update?id=${params.row._id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/admin/${orPath}/update?id=${params.row._id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">Update</div>
             </Link>
             <div
@@ -45,6 +52,20 @@ const Datatable = ({ columns }) => {
             </div>
           </div>
         );
+        else return (
+          <div className="cellAction">
+              <Link className="viewButton" to={`/admin/orders/detail?id=${params.row._id}`}>detail</Link>
+              <Link to={`/admin/${orPath}/update?id=${params.row._id}`} style={{ textDecoration: "none" }}>
+              <div className="viewButton">Update</div>
+            </Link>
+            <div
+              className="deleteButton"
+              onClick={() => handleDelete(params.row._id)}
+            >
+              Delete
+            </div>
+          </div>
+        )
       },
     },
   ];
@@ -66,6 +87,7 @@ const Datatable = ({ columns }) => {
         checkboxSelection
         getRowId={(row) => row._id}
       />
+
     </div>
   )
 }

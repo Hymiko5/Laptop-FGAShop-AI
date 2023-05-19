@@ -31,6 +31,7 @@ from sklearn.metrics.pairwise import linear_kernel
 '''
     DEEP LEARNING LIBRARIES
 '''
+
 import tensorflow as tflow
 from keras.models import load_model
 print(tflow.version)
@@ -64,8 +65,11 @@ operationRe = "windows|mac os"
 graph = tflow.compat.v1.get_default_graph()
 stemmer = LancasterStemmer()
 
-chatbot = db["chatbot"]
-intents = list(chatbot.find())
+# chatbot = db["chatbot"]
+# intents = list(chatbot.find())
+
+with open('intent.json', encoding='utf-8') as json_data:
+    intents = json.load(json_data)
 
 def clean_up_sentence(sentence):
     # tokenize the pattern
@@ -125,8 +129,10 @@ def orderStr(order):
 def createQuery():
     print(session)
     obj = {}
-    if session.get('brand') is not None:
-        obj['brand'] = re.compile(session['brand'], re.IGNORECASE)
+    if session.get('laptop-brand') is not None:
+        obj['brand'] = re.compile(session['laptop-brand'], re.IGNORECASE)
+    if session.get('laptop_brand_negative') is not None:
+        obj['brand'] = re.compile({ "$ne": session['laptop_brand_negative'] }, re.IGNORECASE)
     if session.get('laptopType') is not None:
         obj['laptopType'] = re.compile(session['laptopType'], re.IGNORECASE)
     if session.get('price') is not None:
@@ -162,19 +168,26 @@ def response(sentence, userID):
     if results:
     #loop as long as there are matches to process
         while results:
-            for i in intents:
-                # find a tag matching the first result
+            for i in intents['intents']:
+                # find a tag matching thet first result
                 if i['tag'] == results[0][0]:
                     if i['tag'] == 'advice':
                         session.clear()
                         return Response( is_success=True, type = 'message', msg=random.choice(i['responses']) )
-                    if i['tag'] == 'brand':
+                    if i['tag'] == 'laptop-brand':
                         brandResult = re.findall(brandRe, lowerSentence)
                         if brandResult:
-                            session['brand'] = brandResult[0]
-                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']) )
+                            session['laptop-brand'] = brandResult[0]
+                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']).replace("__", brandResult[0]) )
                         else:
-                            return Response( is_success=True, type = 'message', msg="Chúng tôi không cung cấp sản phẩm của hãng bạn muốn tìm!!!" )
+                            return Response( is_success=True, type = 'message', msg=f"Chúng tôi không cung cấp sản phẩm của hãng {brandResult[0]}!!!" )
+                    if i['tag'] == 'laptop_brand_negative':
+                        brandResult = re.findall(brandRe, lowerSentence)
+                        if brandResult:
+                            session['laptop_brand_negative'] = brandResult[0]
+                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']).replace("__", brandResult[0]) )
+                        else:
+                            return Response( is_success=True, type = 'message', msg=f"Chúng tôi không cung cấp sản phẩm của hãng {brandResult[0]}!!!" )
                     if i['tag'] == 'laptopType':
                         laptopTypeResult = re.findall(laptopTypeRe, lowerSentence)
                         if laptopTypeResult:
@@ -187,7 +200,7 @@ def response(sentence, userID):
                         priceResult = re.findall('\s\d+\s?', lowerSentence)
                         if priceResult:
                             session['price'] = priceResult[0].strip(" ")
-                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']) )
+                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']).replace(priceResult[0].strip(" ")) )
                         else:
                             return Response( is_success=True, type = 'message', msg="Chúng tôi không cung cấp sản phẩm của hãng bạn muốn tìm!!!" )
                     if i['tag'] == 'gift':
@@ -198,21 +211,21 @@ def response(sentence, userID):
                         if cpuIResult:
                             session['config_cpu_i'] = cpuIResult[0]
                             print(cpuIResult)
-                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']) )
+                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']).replace("__", cpuIResult[0]) )
                         else:
                             return Response( is_success=True, type = 'message', msg="Chúng tôi không cung cấp sản phẩm của hãng bạn muốn tìm!!!" )
                     if i['tag'] == 'config_cpu_speed':
                         cpuSpeedResult = re.findall(r"[-+]?(?:\d*\.*\d+)", lowerSentence)
                         if cpuSpeedResult:
                             session['config_cpu_speed'] = re.findall('\d+', lowerSentence)[0]
-                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']) )
+                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']).replace("__", re.findall('\d+', lowerSentence)[0]) )
                         else:
                             return Response( is_success=True, type = 'message', msg="Chúng tôi không cung cấp sản phẩm của hãng bạn muốn tìm!!!" )
                     if i['tag'] == 'config_ram':
                         ramResult = re.findall('\d+', lowerSentence)
                         if ramResult:
                             session['config_ram'] = ramResult[0]
-                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']) )
+                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']).replace("__", ramResult[0]) )
                         else:
                             return Response( is_success=True, type = 'message', msg="Chúng tôi không cung cấp sản phẩm của hãng bạn muốn tìm!!!" )
                     if i['tag'] == 'hard_drive':
@@ -220,21 +233,21 @@ def response(sentence, userID):
                         if hardDrive:
                             arr = [ re.findall('\d+', lowerSentence)[0], hardDrive[0] ]
                             session['hard_drive'] = arr
-                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']) )
+                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']).replace("__", f"{arr[0]} {arr[1]}") )
                         else:
                             return Response( is_success=True, type = 'message', msg="Chúng tôi không cung cấp sản phẩm của hãng bạn muốn tìm!!!" )
                     if i['tag'] == 'operation':
                         operationResult = re.findall(operationRe, lowerSentence)
                         if operationResult:
                             session['operation'] = operationResult[0]
-                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']) )
+                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']).replace("__", operationResult[0]) )
                         else:
                             return Response( is_success=True, type = 'message', msg="Chúng tôi không cung cấp sản phẩm của hãng bạn muốn tìm!!!" )
                     if i['tag'] == 'laptop_weight':
                         weightResult = re.findall('\d+', lowerSentence)
                         if weightResult:
                             session['laptop_weight'] = re.findall('\d+', lowerSentence)[0]
-                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']) )
+                            return Response( is_success=True, type = 'message', msg=random.choice(i['responses']).replace("__", re.findall("\d+", lowerSentence)[0]) )
                         else:
                             return Response( is_success=True, type = 'message', msg="Chúng tôi không cung cấp sản phẩm của hãng bạn muốn tìm!!!" )
                     if i['tag'] == 'order':
@@ -246,11 +259,9 @@ def response(sentence, userID):
                             return Response( is_success=True, type = 'message', msg="Chúng tôi không cung cấp sản phẩm của hãng bạn muốn tìm!!!" )
                     if i['tag'] == 'user-order':
                         emailResult = re.findall(emailRe, lowerSentence)
-                        print(emailResult)
                         if emailResult:
                             userEmail = emailResult[0]
                             userId = userCol.find_one({ "email": userEmail })['_id']
-                            print(userId)
                             return Response( is_success=True, type = 'user-order', res = orderCol.find({ "userId": ObjectId(userId) }) )
                         else:
                             return Response( is_success=True, type = 'message', msg="User Email sai!!!" )
@@ -273,6 +284,7 @@ def response(sentence, userID):
 @app.route('/chatbot/message', methods=['POST'])
 def send():
     userText = request.form['message']
+    print(session)
     return json.loads(dumps(response(userText, '123').__dict__))
 
 @app.route('/chatbot/add', methods=['POST'])

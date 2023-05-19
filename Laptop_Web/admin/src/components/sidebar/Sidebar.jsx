@@ -3,6 +3,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
+import ExtensionIcon from '@mui/icons-material/Extension';
 import StoreIcon from "@mui/icons-material/Store";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
@@ -45,6 +46,12 @@ const Sidebar = () => {
             <li>
               <StoreIcon className="icon" />
               <span>Products</span>
+            </li>
+          </Link>
+          <Link to="/admin/plugins" style={{ textDecoration: "none" }}>
+            <li>
+              <ExtensionIcon className="icon" />
+              <span>Plugins</span>
             </li>
           </Link>
           <Link to="/admin/orders" style={{ textDecoration: "none" }}>

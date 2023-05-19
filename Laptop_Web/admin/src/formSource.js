@@ -143,18 +143,6 @@ export const productInputs = [
     placeholder: "Online price",
   },
   {
-    id: 17,
-    label: "Gift-Item-Title",
-    type: "text",
-    placeholder: "Gift-Item-Title",
-  },
-  {
-    id: 18,
-    label: "Gift-Item-Img",
-    type: "text",
-    placeholder: "Gift-Item-Img",
-  },
-  {
     id: 19,
     label: "Gift-amount",
     type: "text",
@@ -178,24 +166,6 @@ export const productInputs = [
     type: "text",
     placeholder: "Laptop detail",
   },
-  // {
-  //   id: 19,
-  //   label: "Plugin",
-  //   type: "select",
-  //   placeholder: "Plugin",
-  // },
-  // {
-  //   id: 20,
-  //   label: "Laptop type",
-  //   type: "select",
-  //   placeholder: "Laptop type",
-  // },
-  // {
-  //   id: 21,
-  //   label: "Brand",
-  //   type: "select",
-  //   placeholder: "Brand",
-  // },
   {
     id: 23,
     label: "Short Name",
@@ -220,4 +190,46 @@ export const productInputs = [
     type: "text",
     placeholder: "Quantity",
   },
+];
+
+export const pluginInputs = [
+  {
+    id: 1,
+    label: "Name",
+    type: "text",
+    placeholder: "Enter the plugin name",
+  },
+  {
+    id: 2,
+    label: "Online price",
+    type: "text",
+    placeholder: "Enter the online price",
+  }
+];
+
+export const orderInputs = [
+  {
+    id: 1,
+    label: "Provincial",
+    type: "text",
+    placeholder: "Provincial",
+  },
+  {
+    id: 2,
+    label: "District",
+    type: "text",
+    placeholder: "Enter the online price",
+  },
+  {
+    id: 3,
+    label: "Ward",
+    type: "text",
+    placeholder: "Enter the online price",
+  },
+  {
+    id: 4,
+    label: "Address",
+    type: "text",
+    placeholder: "Enter the online price",
+  }
 ];

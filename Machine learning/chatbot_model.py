@@ -13,15 +13,11 @@ import matplotlib.pyplot as plt
 
 from keras.models import Sequential
 from keras.layers import Dense
-import pymongo
-client = pymongo.MongoClient("mongodb://localhost:27017/")
-db = client["LaptopDatabase"]
-chatbot = db["chatbot"]
+
 # importing chatbot intents file
 
-# with open('intent.json', encoding='utf-8') as json_data:
-#     intents = json.load(json_data)
-intents = list(chatbot.find())
+with open('intent.json', encoding='utf-8') as json_data:
+    intents = json.load(json_data)
 
 words = []
 classes = []
@@ -30,7 +26,7 @@ documents = []
 ignore_words = ['?']
 
 # loop through each sentence in our intents patterns
-for intent in intents:
+for intent in intents['intents']:
     for pattern in intent['patterns']:
         # tokenize each word in the sentence 
         w = nltk.word_tokenize(pattern)
@@ -131,8 +127,7 @@ plt.figure()
 plt.plot(epochs, loss, 'bo', label='Training loss')
 plt.title('Training and validation loss')
 plt.legend()
-# plt.show()
-
+plt.show()
 
 
 

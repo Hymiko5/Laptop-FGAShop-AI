@@ -1,6 +1,6 @@
 const main = require('../config/db/connection').main;
 const { default: mongoose } = require('mongoose');
-
+const mongooseDelete = require('mongoose-delete');
 
 const pluginSchema = new mongoose.Schema({
     name: { type: String, required: true, unique: true },
@@ -13,6 +13,10 @@ const pluginSchema = new mongoose.Schema({
     laptops: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Laptop', default: [] }],
 }, { timestamps: true })
 
+pluginSchema.plugin(mongooseDelete, {
+    deleteAt: true,
+    overrideMethods: 'all'
+})
 const Plugin = mongoose.model('Plugin', pluginSchema);
 module.exports = Plugin;
 

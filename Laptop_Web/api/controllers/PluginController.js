@@ -1,28 +1,46 @@
+const { plugin } = require('mongoose');
 const Plugin = require('../models/Plugin')
+const uploadSeaweed = require("../middlewares/fileExtension");
 
 class PluginController {
   // POST [/api/admin/plugins]
   async createPlugin(req, res, next) {
-    const newLaptop = new Plugin(req.body);
-    try {
-      const savedPlugin = await newPlugin.save();
-      res.status(200).json(savedPlugin);
-    } catch (err) {
-      next(err);
+    const fileName = new Date().valueOf().toString();
+    const url = "http://10.9.3.50:8888";
+    const folder = "LaptopAI";
+    const response = await uploadSeaweed(req.file, url, folder, fileName);
+    if(response) {
+      try {
+        req.body.image = response;
+        const newPlugin = new Plugin(req.body);
+        const savedPlugin = await newPlugin.save();
+        res.status(200).json(savedPlugin);
+      } catch (err) {
+        next(err);
+      }
     }
+    
   }
   // PUT [/api/admin/plugins/:id]
   async updatePlugin(req, res, next) {
-    try {
-      const updatedPlugin = await Plugin.findByIdAndUpdate(
-        req.params.id,
-        { $set: req.body },
-        { new: true }
-      );
-      res.status(200).json(updatedPlugin);
-    } catch (err) {
-      next(err);
+    const fileName = new Date().valueOf().toString();
+    const url = "http://10.9.3.50:8888";
+    const folder = "LaptopAI";
+    const response = await uploadSeaweed(req.file, url, folder, fileName);
+    if(response) {
+      try {
+        req.body.image = response;
+        const updatedPlugin = await Plugin.findByIdAndUpdate(
+          req.params.id,
+          { $set: req.body },
+          { new: true }
+        );
+        res.status(200).json(updatedPlugin);
+      } catch (err) {
+        next(err);
+      }
     }
+    
   }
   // DELETE [/api/admin/plugins/:id]
   async deletePlugin(req, res, next) {
@@ -44,6 +62,15 @@ class PluginController {
     }
   }
 
+  // GET [/api/admin/plugins/title]
+  async getPluginTitles(req, res, next) {
+    try {
+      const plugins = await Plugin.find().select('name');
+      res.status(200).json(plugins);
+    } catch (err) {
+      next(err);
+    }
+  }
   // GET [/api/admin/plugins/:id]
   async getPlugin(req, res, next) {
     try {
@@ -54,10 +81,25 @@ class PluginController {
     }
   }
 
+  
+
   // GET [/api/admin/plugins]
   async getPlugins(req, res, next) {
     try {
       const plugins = await Plugin.find();
+      res.status(200).json(plugins);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  
+
+  // GET [/api/admin/plugins/search]
+  async searchPlugins(req, res, next) {
+    const { keywords } = req.query;
+    try {
+      const plugins = await Plugin.find({ "name": { $regex: new RegExp(keywords, "i") }});
       res.status(200).json(plugins);
     } catch (err) {
       next(err);

@@ -12,6 +12,7 @@ const laptopsRoute = require('./routes/laptops');
 const ordersRoute = require('./routes/orders');
 const pluginsRoute = require('./routes/plugins');
 const usersRoute = require('./routes/users');
+const fileRoute = require('./routes/file');
 const main = require('./config/db/connection').main;
 let app = express();
 app.use(cors({ origin: '*' }));
@@ -40,6 +41,7 @@ app.use("/api/admin/laptops", laptopsRoute);
 app.use("/api/admin/orders", ordersRoute);
 app.use("/api/admin/plugins", pluginsRoute);
 app.use("/api/admin/users", usersRoute);
+app.use("/api/admin/file", fileRoute);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;

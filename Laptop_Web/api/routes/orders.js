@@ -2,6 +2,7 @@ const OrderController = require("../controllers/OrderController");
 const router = require('express').Router();
 const { verifyAdmin } = require('../utils/verifyToken');
 
+router.put("/:id", OrderController.updateOrder);
 
 // GET TOTAL REVENUE 6 MONTH
 router.get("/revenue/6-months", OrderController.getSixMonthRevenue);
@@ -18,14 +19,22 @@ router.delete("/:id", verifyAdmin, OrderController.deleteOrder);
 //DESTROY
 router.delete("/:id/force", verifyAdmin, OrderController.destroyOrder);
 
-//GET LAPTOPS
+//GET ORDER INFO
+router.get("/:id/info", OrderController.getOrdersInfo);
+
+//GET ORDER SEARCH
+router.get("/search", OrderController.searchOrders);
+
+//GET ORDERS
 router.get("/", verifyAdmin, OrderController.getOrders);
 
 //GET COUNT
 
 router.get("/count", verifyAdmin, OrderController.countOrders);
 
-//GET LAPTOP
+//GET ORDER
 router.get("/:id", verifyAdmin, OrderController.getOrder);
+
+
 
 module.exports = router;

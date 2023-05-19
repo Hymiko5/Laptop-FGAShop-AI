@@ -1,3 +1,6 @@
+import { DataGridSelectBox } from "./components/dataGridSelectBox/DataGridSelectBox";
+import Select from 'react-select';
+
 export const userColumns = [
   { field: "_id", headerName: "ID", width: 70 },
   {
@@ -132,29 +135,10 @@ export const orderColumns = [
     headerName: "Status",
     width: 120,
     renderCell: (params) => {
-      switch (params.row.status) {
-        case 0:
-          return (
-            <div className="cellWithStatus pending">
-              Pending
-            </div>
-          )
-          break;
-        case 1:
-          return (
-            <div className="cellWithStatus passive">
-              Passive
-            </div>
-          )
-          break;
-        case 2:
-          return (
-            <div className="cellWithStatus active">
-              Active
-            </div>
-          )
-          break;
-      }
+      const statusOptions = [{ value: 0, label: "Pending" }, { value: 1, label: "Canceled" }, { value: 2, label: "Arrived" }];
+      return (
+        <DataGridSelectBox id = { params.row._id } options = { statusOptions } defaultStatus = { params.row.status } />
+      )
     }
   },
   {
@@ -165,7 +149,7 @@ export const orderColumns = [
   {
     field: "deliverWay",
     headerName: "Method",
-    width: 100
+    width: 100,
   },
   {
     field: "deliverAddress",
@@ -178,5 +162,132 @@ export const orderColumns = [
         </div>
       )
     }
+  }
+]
+
+export const pluginColumns = [
+  {
+    field: "_id",
+    headerName: "ID",
+    width: 30
+  },
+  {
+    field: "name",
+    headerName: "Name",
+    width: 150,
+  },
+  {
+    field: "onlyOnline",
+    headerName: "Only Online",
+    width: 100
+  },
+  {
+    field: "stars",
+    headerName: "Stars",
+    width: 50
+  },
+  {
+    field: "rateNumber",
+    headerName: "RateNumber",
+    width: 80
+  },
+  {
+    field: "image",
+    headerName: "image",
+    width: 50,
+    renderCell: (params) => {
+      return (
+        <div className="cellWithImg">
+          <img className="cellImg" src={params.row.image} alt="avatar" />
+          {params.row.shortName}
+        </div>
+      )
+    }
+  },
+]
+
+export const GiftColumns = [
+  {
+    field: "title",
+    headerName: "Title",
+    width: 100
+  },
+  {
+    field: "img",
+    headerName: "Name",
+    width: 50,
+    renderCell: (params) => {
+      return (
+        <div className="cellWithImg">
+          <img className="cellImg" src={params.row.img} alt="avatar" />
+        </div>
+      )
+    }
+  }
+]
+
+
+export const orderProductColumns = [
+  {
+    field: "laptopDetail._id",
+    headerName: "ID",
+    width: 200,
+    renderCell: (params) => {
+      return (
+        <div><p>{params.row.laptopDetail._id}</p></div>
+      )
+    }
+  },
+  {
+    field: "laptopName",
+    headerName: "Laptop Name",
+    width: 200,
+    renderCell: (params) => {
+      return (
+        <div><p>{params.row.laptopDetail.laptopName}</p></div>
+      )
+    }
+  },
+  {
+    field: "price",
+    headerName: "Price",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <div><p>{params.row.laptopDetail.price}</p></div>
+      )
+    }
+  },
+  {
+    field: "onlinePrice",
+    headerName: "Online Price",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <div><p>{params.row.laptopDetail.onlinePrice}</p></div>
+      )
+    }
+  },
+  {
+    field: "thumnail",
+    headerName: "Thumnail",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <div className="cellWithImg">
+          <img className="cellImg" width="50" height="50" src={params.row.laptopDetail.thumnail} alt="avatar" />
+        </div>
+      )
+    }
+  },
+  {
+    field: "purchasedQuantity",
+    headerName: "Purchased Quantity",
+    width: 40
+  },
+  {
+    field: "totalPrice",
+    headerName: "Total Price",
+    width: 100
   }
 ]

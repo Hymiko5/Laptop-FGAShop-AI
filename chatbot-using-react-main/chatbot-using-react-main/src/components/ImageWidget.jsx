@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
+import { Link } from "react-router-dom";
 
 
 export default function ImageWidget({ laptopList }) {
@@ -18,6 +19,7 @@ export default function ImageWidget({ laptopList }) {
        <ol>
          {laptopList.map((laptop, index) => {
            return (
+            <Link to={`http://localhost:3000/laptop/${laptop.slug}`} target="_blank" rel="noopener noreferrer">
             <Card sx={{ maxWidth: 345 }}>
             <CardHeader
               avatar={
@@ -53,6 +55,7 @@ export default function ImageWidget({ laptopList }) {
               </IconButton>
             </CardActions>
           </Card>
+          </Link>
            );
          })}
        </ol>

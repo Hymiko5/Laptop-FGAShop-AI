@@ -36,7 +36,7 @@ if result.laptops.length > 0
                     b=laptop.gift.amount
                       sup đ
             .item-info
-              if laptop.rate.rateNumber != 0
+              if laptop.rate && laptop.rate.rateNumber != 0
                 - abcdefu = 123;
                 - n = (Math.round(laptop.rate.stars*2)/2);
                 .product-rating
@@ -70,8 +70,11 @@ if result.laptops.length > 0
                     span=laptop.configuration["CPU"]
                   .box-config
                     if laptop.configuration["Card màn hình"]
-                      span.config-name Card 
-                      span=laptop.configuration["Card màn hình"].replace(regex, '').split(',')[1].trim()
+                      span.config-name Card
+                      if laptop.configuration["Card màn hình"].replace(regex, '').split(',')[1]
+                        span=laptop.configuration["Card màn hình"].replace(regex, '').split(',')[1].trim()
+                      else
+                        span=laptop.configuration["Card màn hình"]
           .sale=laptop.installment
       if result.remain > 0
         button.btn.btn-primary.d-flex.justify-content-center.align-items-center.more-btn(type='button')="Còn " + result.remain + " sản phẩm "

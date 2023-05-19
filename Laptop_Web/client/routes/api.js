@@ -20,6 +20,7 @@ module.exports = function (app) {
     result.laptops.forEach(laptop => {
       laptop.configuration["Ổ cứng"] = laptop.configuration["Ổ cứng"].match(/SSD|HDD/) + " " + laptop.configuration["Ổ cứng"].split(/SSD|HDD/)[0].trim();
     })
+    console.log(result.laptops[0]['configuration']);
     res.render('pug', { result, showLaptopByType: true });
   });
   app.route('/laptop').post(SiteController.findMoreLaptop, (req, res) => {

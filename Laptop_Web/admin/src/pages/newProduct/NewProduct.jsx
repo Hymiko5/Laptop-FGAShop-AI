@@ -2,50 +2,146 @@ import "./newProduct.scss";
 import Sidebar from "../../components/sidebar/Sidebar"
 import { Navbar } from "../../components/navbar/Navbar"
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import React, {Component} from 'react';
 import insertRequest from "../../hooks/insertRequest";
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import './modal.css'
+import { Gift } from "../../components/gift/Gift";
+import useFetch from "../../hooks/useFetch";
+import Select from 'react-select';
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const NewProduct = ({ inputs, title }) => {
-  const [file, setFile] = useState("");
-  const [userName, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [file, setFile] = useState([]);
   const [modalShow, setModalShow] = React.useState(false);
+  const [item, setItem] = useState([]);
+  const [imgTitle, setImgTitle] = useState("");
+  const [img, setImg] = useState("");
+  const [pluginTitles, setPluginTitles] = useState([]);
+  const [laptopName, setLaptopName] = useState("");
+  const [guide, setGuide] = useState("");
+  const [price, setPrice] = useState(0);
+  const [installment, setInstallment] = useState("");
+  const [CPU, setCPU] = useState("");
+  const [RAM, setRAM] = useState("");
+  const [hardware, setHardware] = useState("");
+  const [monitor, setMonitor] = useState("");
+  const [graphicCard, setGraphicCard] = useState("");
+  const [connector, setConnector] = useState("");
+  const [operation, setOperation] = useState("");
+  const [design, setDesign] = useState("");
+  const [dw, setDW] = useState("");
+  const [releaseTime, setReleaseTime] = useState("");
+  const [onlinePrice, setOnlinePrice] = useState("");
+  const [giftAmount, setGiftAmount] = useState("");
+  const [giftExpire, setGiftExpire] = useState("");
+  const [promotion, setPromotion] = useState("");
+  const [laptopDetail, setLaptopDetail] = useState("");
+  const [shortName, setShortName] = useState("");
+  const [laptopType, setLaptopType] = useState("");
+  const [slug, setSlug] = useState("");
+  const [quantity, setQuantity] = useState(0);
+  const [brand, setBrand] = useState("");
+  const [isBusiness, setIsBusiness] = useState(true);
+  const [plugins, setPlugins] = useState([])
+  const { data } = useFetch("/admin/plugins/title");
+  const pluginOption = data.map(d => {return { "value": d._id, "label": d.name }})
+  useEffect(() => {
+    if(pluginTitles.length ==0) {
+      setPluginTitles(pluginOption)
+    }
+    
+  })
   const [message, setMessage] = React.useState({
     heading: "",
     center: "",
     message: ""
   });
-  const [plugins, setPlugins] = useState([])
   
   const navigate = useNavigate();
   const routeChange = () =>{ 
-    let path = `/admin/laptops`; 
+    let path = `/admin/products`; 
     navigate(path)
   }
-
   const handleChangeSinglePost = (value, id) => {
-    if(id === 1) setUsername(value);
-    if(id === 2) setEmail(value);
-    if(id === 3) setPhoneNumber(value);
-    if(id === 4) setPassword(value);
-    if(id === "admin") setIsAdmin(value);
+    if(id === 1) setLaptopName(value);
+    if(id === 3) setGuide(value);
+    if(id === 4) setPrice(parseFloat(value));
+    if(id === 5) setInstallment(value);
+    if(id === 6) setCPU(value);
+    if(id === 7) setRAM(value);
+    if(id === 8) setHardware(value);
+    if(id === 9) setMonitor(value);
+    if(id === 10) setGraphicCard(value);
+    if(id === 11) setConnector(value);
+    if(id === 12) setOperation(value);
+    if(id === 13) setDesign(value);
+    if(id === 14) setDW(value);
+    if(id === 15) setReleaseTime(value);
+    if(id === 16) setOnlinePrice(value);
+    if(id === 19) setGiftAmount(value);
+    if(id === 20) setGiftExpire(value);
+    if(id === 21) setPromotion(value);
+    if(id === 22) setLaptopDetail(value);
+    if(id === 23) setShortName(value);
+    if(id === 24) setSlug(value);
+    if(id === 25) setQuantity(value);
+    if(id === "type") setLaptopType(value);
+    if(id === "business") setIsBusiness(value == "true" ? true : false);
+    if(id === "brand") setBrand(value);
     console.log(file)
   }
 
-  const handlePlugin = (plugin) => {
-    setPlugins([...plugins, plugin])
+  const handlePlugin = (selectedOption) => {
+    setPlugins(prev => [...prev, selectedOption])
+    console.log(plugins)
   }
-  
+
+  const uploadGiftImage = (gifts) => {
+    for(let i = 0; i< gifts.length; i++) {
+      const url = insertRequest(`/admin/file/upload`, {file: gifts[i].img});
+      gifts[i].img = url;
+    }
+  }
+  const handleFormData = () => {
+    const arr = new FormData();
+    for (var i = 0; i<file.length; i++) {
+      arr.append("thumnail", file[i]);
+    }
+    arr.append("laptopName", laptopName);
+    arr.append("policy.guide", guide );
+    arr.append("price", price);
+    arr.append("installment", installment);
+    arr.append("configuration.CPU", CPU);
+    arr.append("configuration.RAM", RAM);
+    arr.append("configuration.Ổ cứng", hardware);
+    arr.append("configuration.Màn hình", monitor);
+    arr.append("configuration.Card màn hình", graphicCard);
+    arr.append("configuration.Cổng kết nối", connector);
+    arr.append("configuration.Hệ điều hành", operation);
+    arr.append("configuration.Thiết kế", design);
+    arr.append("configuration.Kích thước, trọng lượng", dw);
+    arr.append("configuration.Thời điểm ra mắt", releaseTime);
+    arr.append("onlinePrice", onlinePrice);
+    arr.append("gift.items", item);
+    arr.append("gift.amount", giftAmount);
+    arr.append("gift.expire", giftExpire);
+    arr.append("laptopDetail.promotion", [promotion]);
+    arr.append("laptopDetail.detail", [laptopDetail]);
+    arr.append("plugins", plugins.map(plugin =>  plugin.value));
+    arr.append("laptopType", laptopType);
+    arr.append("brand", brand);
+    arr.append("shortName", shortName);
+    arr.append("isBusiness", isBusiness);
+    arr.append("slug", slug);
+    arr.append("quantity", quantity);
+    return arr;
+    
+  }
   function MyVerticallyCenteredModal(props) {
     return (
       <Modal
@@ -84,27 +180,27 @@ export const NewProduct = ({ inputs, title }) => {
         </div>
         <div className="bottom">
           <div className="left">
-            <img src={file ? URL.createObjectURL(file) : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"} alt="" />
+            <img src={file.length > 0 ? URL.createObjectURL(file[0]) : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"} alt="" />
           </div>
           <div className="right">
             <form onSubmit={async (e) => {
                 console.log("submit")
                 e.preventDefault();
-                const res = await insertRequest("/admin/users", { userName, email, phoneNumber, password, isAdmin, photo: file.name })
-                console.log(res)
+                uploadGiftImage(item);
+                const res = await insertRequest("/admin/laptops", handleFormData())
                 if(res.success == false) {
                   setModalShow(true)
                   setMessage({
-                    heading: "Thêm user không thành công",
+                    heading: "Thêm không thành công",
                     center: "Error",
                     message: res.message
                   })
                 } else {
                   setModalShow(true)
                   setMessage({
-                    heading: "Thêm user thành công",
+                    heading: "Thêm thành công",
                     center: "Success",
-                    message: "Thêm thành công " + res.data.email
+                    message: "Thêm thành công " + res.data._id
                   })
                 }
                }}>
@@ -112,7 +208,7 @@ export const NewProduct = ({ inputs, title }) => {
                 <label htmlFor="file">
                   Thumnail: <DriveFolderUploadOutlinedIcon className="icon" />
                 </label>
-                <input type="file" id="file" onChange={e => setFile(e.target.files[0])} style={{ display: "none" }} multiple="multiple"  />
+                <input type="file" id="file" onChange={e => setFile(e.target.files)} style={{ display: "none" }} multiple="multiple"  />
               </div>
               {inputs.map((input) => (
                 <div className="formInput" key={input.id}>
@@ -120,25 +216,35 @@ export const NewProduct = ({ inputs, title }) => {
                   <input type={input.type} placeholder={input.placeholder} onChange={e=>handleChangeSinglePost(e.target.value, input.id)} />
                 </div>
               ))}
-              <div className="formInput" >
+              <div className="formInput">
                   <label>Plugin</label>
-                  <input type="text" placeholder="Plugin" onChange={e=> { handlePlugin(e.target.value); return e.target.value = "" }}/>
-                  <div>{plugins.join(", ")}</div>
+                   <Select
+                      onChange={handlePlugin}
+                      options={pluginTitles}
+                    />
+                  <div>{plugins.map(plugin => plugin.label).join(",")}</div>
                 </div>
                 <div className="formInput" >
                   <label>Laptop type</label>
-                  <select id="type" onChange={e=>this.handleChangeSinglePost(e.target.value, "type")}>
-                    <option value="Laptop gaming">Laptop gaming</option>
+                  <select id="type" onChange={e=>handleChangeSinglePost(e.target.value, "type")}>
+                    <option value="Laptop gaming" selected>Laptop gaming</option>
                     <option value="Macbook">Macbook</option>
-                    <option value="Macbook">Học tập văn phòng</option>
-                    <option value="Macbook">Đồ họa kĩ thuật</option>
-                    <option value="Macbook">Mỏng nhẹ</option>
-                    <option value="Macbook">Cao cấp sang trọng</option>
+                    <option value="Học tập văn phòng">Học tập văn phòng</option>
+                    <option value="Đồ họa kĩ thuật">Đồ họa kĩ thuật</option>
+                    <option value="Mỏng nhẹ">Mỏng nhẹ</option>
+                    <option value="Cao cấp sang trọng">Cao cấp sang trọng</option>
                   </select>
+                </div>
+                <div className="giftInput" >
+                  <label>Gifts</label>
+                  <input type="text" onChange={ (e) => setImgTitle(e.target.value) } />
+                  <input type="file" onChange={ (e) => setImg(e.target.files[0]) } />
+                  <a onClick={ () => { const gift = { title: imgTitle, img }; setItem((prev) =>  [...prev, gift]); setImgTitle(""); setImg("") } }>Add</a>
+                  <Gift gifts={item} />
                 </div>
                 <div className="formInput" >
                   <label>Brand</label>
-                  <select id="brand" onChange={e=>this.handleChangeSinglePost(e.target.value, "brand")}>
+                  <select id="brand" onChange={(e) => handleChangeSinglePost(e.target.value, "brand")}>
                     <option value="Dell">Dell</option>
                     <option value="Lenovo">Lenovo</option>
                     <option value="Hp">Hp</option>
@@ -151,12 +257,12 @@ export const NewProduct = ({ inputs, title }) => {
                 </div>
                 <div className="formInput" >
                   <label>Is business?</label>
-                  <select id="business" onChange={e=>this.handleChangeSinglePost(e.target.value, "business")}>
-                    <option value="true">Dell</option>
-                    <option value="false">Lenovo</option>
+                  <select id="business" onChange={e=>handleChangeSinglePost(e.target.value, "business")}>
+                    <option value="true" selected>True</option>
+                    <option value="false">False</option>
                   </select>
                 </div>
-              <input type="submit" value="Add User"></input>
+              <input type="submit" value="Add Laptop"></input>
             </form>
           </div>
         </div>

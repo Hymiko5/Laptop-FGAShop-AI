@@ -9,7 +9,7 @@
   h5.product-title=laptop.laptopName
     a.product-link(href='#') visit our store
   .product-rating
-    if laptop.rate.rateNumber != 0
+    if laptop.rate && laptop.rate.rateNumber != 0
       - n = (Math.round(laptop.rate.stars*2)/2);
       .product-rating
         while n > 0
@@ -66,7 +66,7 @@
           button.info-btn Xem thêm
         .rating
           h5="Đánh giá " + laptop.laptopName
-          if laptop.rate.rateNumber != 0
+          if laptop.rate && laptop.rate.rateNumber != 0
             - n = (Math.round(laptop.rate.stars*2)/2);
             .product-rating
               each _, i in Array(5)

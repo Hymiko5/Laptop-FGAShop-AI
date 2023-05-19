@@ -52,8 +52,7 @@ export const Update = ({ inputs, title }) => {
     if(id === 2) setEmail(value);
     if(id === 3) setPhoneNumber(value);
     if(id === 4) setPassword(value);
-    if(id === "admin") setIsAdmin(value);
-    console.log(file)
+    if(id === "admin") setIsAdmin(value == "true" ? true : false);
   }
   
   function MyVerticallyCenteredModal(props) {
@@ -102,8 +101,7 @@ export const Update = ({ inputs, title }) => {
             <form onSubmit={async (e) => {
                 console.log("submit")
                 e.preventDefault();
-                const res = await updateRequest(`/admin/users/${_id}`, { userName, email, phoneNumber, password, isAdmin, photo: file.name })
-                console.log(res)
+                const res = await updateRequest(`/admin/users/${_id}`, { userName, email, phoneNumber, password, isAdmin, photo: file })
                 if(res.success == false) {
                   setModalShow(true)
                   setMessage({
@@ -134,9 +132,9 @@ export const Update = ({ inputs, title }) => {
               ))}
               <div className="formInput" >
                   <label>Is admin</label>
-                  <select id="admin" onChange={e=>this.handleChangeSinglePost(e.target.value, "admin")}>
+                  <select id="admin" onChange={e=>handleChangeSinglePost(e.target.value, "admin")}>
                     <option value="true">True</option>
-                    <option value="false">False</option>
+                    <option value="false" selected >False</option>
                   </select>
                 </div>
               <input type="submit" value="Update User"></input>

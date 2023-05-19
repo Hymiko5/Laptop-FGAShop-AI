@@ -6,13 +6,27 @@ import FullscreenExitOutlinedIcon from "@mui/icons-material/FullscreenExitOutlin
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { AuthContext } from "../../context/AuthContext"
+import  { useLocation, useNavigate } from 'react-router-dom'
+import { createBrowserHistory } from "history";
 
 export const Navbar = () => {
+  const location = useLocation();
+  let path = location.pathname.split("/")[2];
   const { dispatch } = useContext(DarkModeContext);
   const { user } = useContext(AuthContext);
+  const [hideSuggestions, setHideSuggestions] = useState(true);
+  const [suggestions, setSuggestions] = useState([]);
+  const [keywords, setKeywords] = useState("");
+  const navigate = useNavigate();
+  const history = createBrowserHistory();
+  const redirectToSearch = () => {
+    navigate(`?keywords=${keywords}`)
+    navigate(0)
+  }
+
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch({ type: "LOGOUT" });
@@ -21,8 +35,8 @@ export const Navbar = () => {
     <div className='navbar'>
       <div className="wrapper">
         <div className="search">
-          <input type="text" placeholder="Search..." />
-          <SearchOutlinedIcon />
+          <input type="text" placeholder="Search..." onChange={ (e) => setKeywords(e.target.value) } />
+          <SearchOutlinedIcon onClick={ () => { redirectToSearch() } }/>
         </div>
         <div className="items">
           <div className="item">

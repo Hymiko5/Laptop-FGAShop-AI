@@ -4,6 +4,8 @@ const createError = require("../utils/error");
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
 const { months } = require("moment");
+const { default: mongoose } = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 class OrderController {
   // PUT [/api/admin/orders/:id]
@@ -158,6 +160,94 @@ class OrderController {
     }
   }
 
+    // GET [/api/admin/orders/search]
+    async searchOrders(req, res, next) {
+      const { keywords } = req.query;
+      try {
+        const orderByUsername = await Order.find({ "userName": { $regex: new RegExp(keywords, "i") }});
+        const orderByProvincial = await Order.find({ "deliverAddress.provincial": { $regex: new RegExp(keywords, "i") }});
+        const orderByDistrict = await Order.find({ "deliverAddress.district": { $regex: new RegExp(keywords, "i") }});
+        const orders = [...orderByUsername, ...orderByProvincial, ...orderByDistrict];
+        res.status(200).json(orders);
+      } catch (err) {
+        next(err);
+      }
+    }
+    // GET [/api/admin/orders/:id/info]
+    async getOrdersInfo(req, res, next) {
+      const { id } = req.params;
+      const pineline = [
+        {
+          $match: { _id: new ObjectId(id) }
+        },
+        {
+          $unwind: "$products"
+        },
+        {
+          $lookup:
+          {
+            from: "laptops",
+            localField: "products.productId",
+            foreignField: "_id",
+            as: "products.productDetail",
+            pipeline: [
+              {
+                $project: {
+                  _id: 1,
+                  laptopName: 1,
+                  thumnail: { "$first": "$thumnail" },
+                  price: 1,
+                  onlinePrice: 1,
+                }
+              }
+            ]
+          }
+        },
+        {
+          $unwind: {
+            path: "$products.productDetail"
+          }
+        },
+        {
+          $group: {
+            "_id": "$_id",
+            "date": { "$first": "$date" },
+            "userName": { "$first": "$userName" },
+            "deliverWay": { "$first": "$deliverWay" },
+            "deliverAddress": { "$first": "$deliverAddress" },
+            "products": { "$push": "$products" },
+          }
+        },
+    
+        {
+          $project: {
+            _id: 1,
+            date: 1,
+            userName: 1,
+            deliverWay: 1,
+            deliverAddress: 1,
+            products: {
+              $map: {
+                input: "$products",
+                as: "product",
+                in: {
+                  "laptopDetail": "$$product.productDetail",
+                  "purchasedQuantity": "$$product.purchasedQuantity",
+                  "totalPrice": {
+                    "$cond": [{ "$and": [{ "$ne": ["$$product.productDetail.onlinePrice", undefined] }, { "$ne": ["$$product.productDetail.onlinePrice", 0] }] }, { "$multiply": ["$$product.productDetail.onlinePrice", "$$product.purchasedQuantity"] }, { "$multiply": ["$$product.productDetail.price", "$$product.purchasedQuantity"] }]
+                  }
+                }
+              }
+            }
+          }
+        },
+      ]
+      Order.aggregate(pineline, function(err, data) {
+        if(err) res.status(404).json(err);
+        else res.status(200).json(data[0]);
+      });
+      
+    }
 
 }
 

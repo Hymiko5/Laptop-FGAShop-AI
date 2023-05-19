@@ -1,22 +1,31 @@
 const PluginController = require("../controllers/PluginController");
 const router = require('express').Router();
 const { verifyAdmin } = require('../utils/verifyToken');
+const multer  = require('multer');
+const upload = multer();
 //CREATE
-router.post("/", verifyAdmin, PluginController.createPlugin);
+router.post("/", verifyAdmin, upload.single('image'), PluginController.createPlugin);
 
 //UPDATE
-router.put("/:id", verifyAdmin, PluginController.updatePlugin);
+router.put("/:id", verifyAdmin, upload.single('image'), PluginController.updatePlugin);
 
 //DELETE
 router.delete("/:id", verifyAdmin, PluginController.deletePlugin);
 
+
+
 //DESTROY
 router.delete("/:id/force", verifyAdmin, PluginController.destroyPlugin);
 
-//GET LAPTOP
+router.get("/search", PluginController.searchPlugins);
+
+router.get("/title", PluginController.getPluginTitles);
+
+//GET PLUGIN
 router.get("/:id", verifyAdmin, PluginController.getPlugin);
 
-//GET LAPTOPS
+//GET PLUGINS
 router.get("/", verifyAdmin, PluginController.getPlugins);
+
 
 module.exports = router;

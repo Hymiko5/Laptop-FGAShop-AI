@@ -7,14 +7,13 @@ const updateRequest = async (url, bodyFormData) => {
       method: "put",
       url: url,
       data: bodyFormData,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "multipart/form-data" },
       withCredentials: true
     })
     return response
   } catch(err) {
     return err.response.data
   }
-    
   };
 
 export default updateRequest;

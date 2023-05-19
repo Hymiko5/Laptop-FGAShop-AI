@@ -7,7 +7,7 @@ const insertRequest = async (url, bodyFormData) => {
       method: "post",
       url: url,
       data: bodyFormData,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "multipart/form-data" },
       withCredentials: true
     })
     return response
